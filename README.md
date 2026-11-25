@@ -41,6 +41,14 @@
 >
 > The new app is brand new: a few packages, the Linux desktop (X11) and some `termux-*` commands are still being tested. If something breaks, please [open an issue](https://github.com/santoshkurmi/antigem/issues).
 
+> [!NOTE]
+> ### 🇨🇳 简体中文开箱即用版 / Simplified Chinese Out-of-the-Box Edition
+> 本分支基于官方最新 `standalone` 分支（`v2.0.5-beta.5`），原生预置了官方社区简体中文语言包（`zh-hans.json`）。在系统语言为中文时开箱即全中文呈现，无需额外访问 GitHub 在线下载。
+> 
+> **致谢 / Special Thanks:**
+> - 感谢官方原作者 **[@Santoshkurmi](https://github.com/Santoshkurmi)** 打造了卓越的 AntiGem 移动 AI 开发环境，并设计了优秀的多语言架构！
+> - 感谢社区贡献者 **[@Zmin2003](https://github.com/Zmin2003)** 提交了 7,262 条 100% 全覆盖的简体中文语言包！
+
 ---
 
 ## See it in action

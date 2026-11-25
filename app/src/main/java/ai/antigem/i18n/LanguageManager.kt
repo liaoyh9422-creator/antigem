@@ -161,7 +161,8 @@ object LanguageManager {
         val p = app.getSharedPreferences("app_language", Context.MODE_PRIVATE)
         prefs = p
         aiReply = p.getString("ai_reply", "").orEmpty()
-        val id = p.getString("id", ENGLISH) ?: ENGLISH
+        val defaultId = if (java.util.Locale.getDefault().language.equals("zh", true) && "zh-hans" in builtInIds()) "zh-hans" else ENGLISH
+        val id = p.getString("id", defaultId) ?: defaultId
         if (id != ENGLISH && !activate(id)) {
             android.util.Log.w("LanguageManager", "language $id could not be loaded, showing English")
         }

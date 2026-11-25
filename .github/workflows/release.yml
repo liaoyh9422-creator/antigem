@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - standalone
-    paths:
-      - 'version.json'
   workflow_dispatch:
 
 permissions:
@@ -66,13 +64,16 @@ jobs:
           echo "$CHANGELOG" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
-      - name: Restore Keystore from Secret
+      - name: Restore Keystore from Secret or Repo
         run: |
-          if [ -z "${{ secrets.RELEASE_KEYSTORE_BASE64 }}" ]; then
-            echo "Error: RELEASE_KEYSTORE_BASE64 secret is missing in GitHub repository settings."
+          if [ -n "${{ secrets.RELEASE_KEYSTORE_BASE64 }}" ]; then
+            echo "${{ secrets.RELEASE_KEYSTORE_BASE64 }}" | base64 -d > app/release.jks
+          elif [ -f app/release.jks ]; then
+            echo "Using tracked app/release.jks from repository."
+          else
+            echo "Error: RELEASE_KEYSTORE_BASE64 secret is missing and app/release.jks not found."
             exit 1
           fi
-          echo "${{ secrets.RELEASE_KEYSTORE_BASE64 }}" | base64 -d > app/release.jks
 
       - name: Build Release APKs
         run: |
@@ -101,6 +102,12 @@ jobs:
 
       - name: Save x86_64 R8 mapping
         run: zip -j "output/AntiGem-${{ steps.version.outputs.tag }}-x86_64-mapping.zip" app/build/outputs/mapping/release/mapping.txt
+
+      - name: Upload APKs as Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: AntiGem-Chinese-Release-APKs
+          path: output/*
 
       - name: Publish GitHub Release
         uses: softprops/action-gh-release@v2
